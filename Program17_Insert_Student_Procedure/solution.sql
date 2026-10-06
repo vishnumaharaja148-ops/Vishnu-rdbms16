@@ -1,41 +1,14 @@
-USE CollegeDB;
-
-CREATE TABLE IF NOT EXISTS Department (
-    DepartmentID INT PRIMARY KEY,
-    DepartmentName VARCHAR(50) NOT NULL
-);
-
-CREATE TABLE IF NOT EXISTS Student (
-    StudentID INT PRIMARY KEY,
-    StudentName VARCHAR(50) NOT NULL,
-    DepartmentID INT,
-    FOREIGN KEY (DepartmentID)
-        REFERENCES Department(DepartmentID)
-);
-
-INSERT IGNORE INTO Department
-VALUES
-(1, 'Computer Science'),
-(2, 'Commerce');
-
-DROP PROCEDURE IF EXISTS InsertStudent;
-
-DELIMITER $$
-
-CREATE PROCEDURE InsertStudent(
-    IN p_student_id INT,
-    IN p_student_name VARCHAR(50),
-    IN p_department_id INT
-)
+ CREATE OR REPLACE FUNCTION count_students
+(p_dept_id IN NUMBER)
+RETURN NUMBER
+IS
+    total_students NUMBER;
 BEGIN
+    SELECT COUNT(*)
+    INTO total_students
+    FROM Student
+    WHERE DepartmentID = p_dept_id;
 
-    -- Insert the student record
-
-END $$
-
-DELIMITER ;
-
--- Test
-CALL InsertStudent(105, 'Kavin', 1);
-
-SELECT * FROM Student;
+    RETURN total_students;
+END;
+/
