@@ -12,3 +12,7 @@ BEGIN
     RETURN total_students;
 END;
 /
+BEGIN
+    insert_student(1005, 'Ravi', 101);
+END;
+/
